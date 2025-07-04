@@ -1,0 +1,217 @@
+/* src/app/shared/sidebar/sidebar.scss */
+
+// ****** DEFINIÇÃO DE VARIÁVEIS ******
+$sidebar-width: 250px;
+$sidebar-collapsed-width: 70px;
+$sidebar-bg: #4e73df;
+$sidebar-text-color: rgba(255, 255, 255, 0.8);
+$sidebar-hover-bg: rgba(255, 255, 255, 0.15);
+$sidebar-active-bg: rgba(0, 0, 0, 0.2);
+$sidebar-active-border: #ffffff;
+$dark-text: #5a5c69; // Variável definida aqui para uso no tooltip
+
+:host {
+  display: block;
+  width: $sidebar-width;
+  height: 100vh;
+  background-color: $sidebar-bg;
+  color: $sidebar-text-color;
+  padding: 0;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  overflow-x: hidden;
+  white-space: nowrap;
+
+  & > .sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+  }
+
+  // ESTILOS QUANDO O SIDEBAR ESTÁ COLAPSADO
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+    padding-left: 0;
+    padding-right: 0;
+
+    & > .sidebar {
+      padding: 0;
+      overflow-x: visible; // Permite que o texto do tooltip exceda a largura do sidebar
+    }
+
+    // Estilos comuns para o texto dos itens e da marca quando colapsado
+    // Eles se tornam tooltips flutuantes no hover
+    .sidebar-menu-item-text,
+    .sidebar-brand-text {
+      position: absolute;
+      left: calc(100% + 0.5rem); // Começa um pouco à direita do sidebar
+      top: 50%;
+      transform: translateY(-50%) scale(0.9); // Começa um pouco menor e levemente deslocado
+      opacity: 0;
+      z-index: 1001;
+      background-color: $dark-text; // Fundo escuro para o tooltip
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 0.35rem;
+      box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+      pointer-events: none;
+      white-space: nowrap;
+      transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    }
+
+    // Estilos do Sidebar Brand (Caminhão) colapsado
+    .sidebar-brand {
+      position: relative;
+      justify-content: center;
+      padding: 0.8rem 0.5rem; // Mais padding horizontal para afastar o caminhão da borda
+      height: 60px;
+      
+      .sidebar-brand-icon {
+        transform: rotate(0deg);
+        margin-right: 0;
+        i {
+          font-size: 1.2rem;
+        }
+      }
+      .sidebar-brand-text {
+        opacity: 0; // Esconde o texto da marca no estado colapsado
+      }
+      // Mostrar texto da marca no hover
+      &:hover .sidebar-brand-text {
+        transform: translateY(-50%) scale(1) translateX(0); // Volta à posição normal e tamanho
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    // Estilos para os itens de menu colapsados
+    .nav-item {
+      position: relative;
+      // Mostrar texto do menu no hover
+      &:hover .sidebar-menu-item-text {
+        transform: translateY(-50%) scale(1) translateX(0); // Volta à posição normal e tamanho
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    .nav-link {
+      justify-content: center;
+      padding: 0.8rem 0.5rem; // Mesma altura vertical e padding horizontal do brand colapsado
+    }
+
+    .sidebar-divider.d-none.d-md-block {
+      display: none !important;
+    }
+  }
+}
+
+// Estilos para a área do logo/título no topo do sidebar (quando expandido)
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem 0;
+  height: 60px;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+
+  .sidebar-brand-icon {
+    transform: rotate(-15deg);
+    transition: transform 0.3s ease-in-out;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i {
+      font-size: 1.8rem;
+      vertical-align: middle;
+    }
+  }
+  
+  .sidebar-brand-text {
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+}
+
+// Estilo para o divisor horizontal
+.sidebar-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin: 1.5rem 0;
+  width: 100%;
+}
+.sidebar-divider.my-0 {
+  margin-top: 0;
+  margin-bottom: 1.5rem; // Aumentado para mais espaço visual
+}
+
+// Estilos para a lista de navegação
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+  &::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+}
+
+.nav-item {
+  margin-bottom: 0.25rem;
+}
+
+// Estilos para os links de navegação
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: $sidebar-text-color;
+  padding: 0.8rem 1rem;
+  border-radius: 0.35rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  white-space: nowrap;
+
+  i {
+    font-size: 1.2rem;
+    width: 25px;
+    text-align: center;
+    flex-shrink: 0;
+    vertical-align: middle;
+    line-height: 1;
+  }
+
+  .sidebar-menu-item-text {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  &:hover {
+    background-color: $sidebar-hover-bg;
+    color: #ffffff;
+  }
+
+  &.active {
+    background-color: $sidebar-active-bg;
+    color: #ffffff;
+    font-weight: bold;
+    border-left: 0.25rem solid $sidebar-active-border;
+    padding-left: calc(1rem - 0.25rem);
+  }
+}
+
+.nav-link:not(.active) i {
+  color: rgba(255, 255, 255, 0.5);
+}
