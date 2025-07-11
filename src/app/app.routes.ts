@@ -12,6 +12,7 @@ import { Motoristas } from './pages/motoristas/motoristas';
 import { Caminhoes } from './pages/caminhoes/caminhoes';
 import { Pessoas } from './pages/pessoas/pessoas';
 import { Usuarios } from './pages/usuarios/usuarios';
+import { ViagensComponent } from './pages/viagens/viagens';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,7 @@ export const routes: Routes = [
       { path: 'caminhoes', component: Caminhoes },
       { path: 'pessoas', component: Pessoas },
       { path: 'usuarios', component: Usuarios },
+      { path : 'viagens', component: ViagensComponent },
       // Qualquer outra rota de página que use o layout deve ser adicionada aqui
     ]
   },
