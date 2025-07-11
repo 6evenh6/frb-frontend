@@ -12,15 +12,26 @@ export interface Receita {
   dataVencimento?: Date;
   dataPagamento?: Date;
   pix?: string;
-  chequeNumero?: string;
+  cheques?: ChequeReceita[];
   motoristaId?: number;
   caminhaoId?: number;
   pessoaId?: number;
-  ativo: boolean;
   dataRegistro: Date;
   observacoesInternas?: string;
 }
-
+export interface ChequeReceitaModel {
+  numeroCheque: string;
+  valor: number;
+  dataCompensacao: string;
+  compensado: boolean;
+}
+export interface ChequeReceita {
+  id: number;
+  numeroCheque: string;
+  valor: number;
+  dataCompensacao: string;
+  compensado: boolean;
+}
 // Para suas listas de Categoria e Forma de Pagamento (enums ou lookups)
 export interface LookupItem {
   valor: number;

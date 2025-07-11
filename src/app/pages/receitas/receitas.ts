@@ -6,6 +6,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 import Swal from 'sweetalert2';
 import { MoedaHelper } from '../../helpers/moeda.helper';
 import { Receita, LookupItem } from '../../models/receita.model';
+import { CreateReceitaModel } from '../../models/CreateReceitaModel';
 
 @Component({
   selector: 'app-receitas',
@@ -20,8 +21,7 @@ export class ReceitasComponent implements OnInit {
   @ViewChild('modalDetalhes', { static: true }) modalDetalhes!: TemplateRef<any>;
   receitaSelecionada: Receita | null = null;
 
-  modelo: Receita = {
-    id: 0,
+  modelo: CreateReceitaModel = {
     valorBruto: null as any,
     valorLiquido: null as any,
     descricao: '',
@@ -29,15 +29,16 @@ export class ReceitasComponent implements OnInit {
     formaPagamento: null as any,
     statusPagamento: null as any,
     dataReceita: new Date(),
-    ativo: true,
-    dataRegistro: new Date(),
     desconto: null as any,
     acrescimos: null as any,
     dataVencimento: undefined,
     dataPagamento: undefined,
     pix: '',
-    chequeNumero: '',
-    observacoesInternas: ''
+    motoristaId: undefined,
+    caminhaoId: undefined,
+    pessoaId: undefined,
+    observacoesInternas: '',
+    cheques: []
   };
 
   receitas: Receita[] = [];
@@ -96,7 +97,6 @@ export class ReceitasComponent implements OnInit {
         statusPagamento: 1,
         dataReceita: new Date('2025-06-21'),
         dataPagamento: new Date('2025-06-22'),
-        ativo: true,
         dataRegistro: new Date('2025-06-21')
       }
     ];
@@ -129,7 +129,6 @@ export class ReceitasComponent implements OnInit {
   cancelar() {
     this.exibirFormulario = false;
     this.modelo = {
-      id: 0,
       valorBruto: 0,
       valorLiquido: 0,
       descricao: '',
@@ -137,14 +136,12 @@ export class ReceitasComponent implements OnInit {
       formaPagamento: null as any,
       statusPagamento: 1,
       dataReceita: new Date(),
-      ativo: true,
-      dataRegistro: new Date(),
       desconto: 0,
       acrescimos: 0,
       dataVencimento: undefined,
       dataPagamento: undefined,
       pix: '',
-      chequeNumero: '',
+      cheques: null as any,
       observacoesInternas: ''
     };
   }
@@ -163,8 +160,12 @@ export class ReceitasComponent implements OnInit {
       desconto,
       acrescimos,
       valorLiquido: this.modelo.valorLiquido,
+      dataReceita: new Date(this.modelo.dataReceita),
       dataRegistro: new Date(),
-      dataReceita: new Date(this.modelo.dataReceita)
+      cheques: this.modelo.cheques.map((c, index) => ({
+        ...c,
+        id: index + 1 // Apenas para simulação local
+      }))
     };
 
     this.receitas.unshift(novaReceitaAdicionada);
@@ -181,9 +182,44 @@ export class ReceitasComponent implements OnInit {
   }
 
   editarReceita(receita: Receita): void {
-    this.modelo = { ...receita };
+    this.modelo = {
+      ...receita,
+      cheques: (receita.cheques ?? []).map(c => ({
+        numeroCheque: c.numeroCheque,
+        valor: c.valor,
+        dataCompensacao: c.dataCompensacao,
+        compensado: c.compensado
+      }))
+    };
+
+
     this.exibirFormulario = true;
   }
+  adicionarCheque(): void {
+    if (!this.modelo.cheques) {
+      this.modelo.cheques = [];
+    }
+
+    this.modelo.cheques.push({
+      numeroCheque: '',
+      valor: 0,
+      dataCompensacao: '',
+      compensado: false
+    });
+  }
+  removerCheque(index: number): void {
+    if (this.modelo.cheques && index >= 0 && index < this.modelo.cheques.length) {
+      this.modelo.cheques.splice(index, 1);
+    }
+  }
+
+  isChequeInvalido(): boolean {
+  if (!this.modelo.cheques || this.modelo.cheques.length === 0) return false;
+
+  return this.modelo.cheques.some(c =>
+    !c.numeroCheque || !c.valor || !c.dataCompensacao
+  );
+}
 
   excluirReceita(id: number): void {
     Swal.fire({

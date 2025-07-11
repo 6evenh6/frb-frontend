@@ -111,10 +111,44 @@
               placeholder="Informe a chave Pix (CPF, telefone, e-mail ou chave aleatória)" />
           </div>
 
-          <div class="col-md-6 mb-3" *ngIf="modelo.formaPagamento === 3">
-            <label for="chequeNumero" class="form-label">Número do Cheque</label>
-            <input type="text" id="chequeNumero" name="chequeNumero" class="form-control"
-              [(ngModel)]="modelo.chequeNumero" />
+          <div *ngIf="modelo.formaPagamento === 3" class="col-12 mb-3">
+            <label class="form-label">Cheques</label>
+
+            <div *ngFor="let cheque of modelo.cheques; let i = index" class="border p-3 mb-3 rounded bg-light-subtle">
+              <div class="row g-2 align-items-end">
+                <div class="col-md-3">
+                  <label class="form-label">Número</label>
+                  <input type="text" class="form-control" [(ngModel)]="cheque.numeroCheque" name="numeroCheque{{i}}"
+                    required />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Valor</label>
+                  <input type="text" class="form-control" mask="separator.2" thousandSeparator="." decimalMarker=","
+                    prefix="R$ " [(ngModel)]="cheque.valor" name="valorCheque{{i}}" required />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Data Compensação</label>
+                  <input type="date" class="form-control" [(ngModel)]="cheque.dataCompensacao"
+                    name="dataCompensacao{{i}}" required />
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label d-block">Compensado</label>
+                  <input type="checkbox" class="form-check-input me-2" [(ngModel)]="cheque.compensado"
+                    name="compensado{{i}}" />
+                  <span>{{ cheque.compensado ? 'Sim' : 'Não' }}</span>
+                </div>
+                <div class="col-md-1 text-end">
+                  <button type="button" class="btn btn-outline-danger btn-sm" (click)="removerCheque(i)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="adicionarCheque()"
+              [disabled]="isChequeInvalido()">
+              <i class="bi bi-plus-lg"></i> Adicionar Cheque
+            </button>
           </div>
 
           <!-- Grupo 5: Observações -->
@@ -254,8 +288,36 @@
         <dt class="col-sm-4">Conta</dt>
         <dd class="col-sm-8">{{ receitaSelecionada?.pix || '-' }}</dd>
 
-        <dt class="col-sm-4">Número do Cheque</dt>
-        <dd class="col-sm-8">{{ receitaSelecionada?.chequeNumero || '-' }}</dd>
+        <dt class="col-sm-4">Cheques</dt>
+        <dd class="col-sm-8">
+          <div *ngIf="(receitaSelecionada?.cheques ?? []).length > 0; else semCheques">
+            <table class="table table-sm table-bordered">
+              <thead class="table-light">
+                <tr>
+                  <th>Número</th>
+                  <th>Valor</th>
+                  <th>Data Compensação</th>
+                  <th>Compensado?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let cheque of receitaSelecionada?.cheques">
+                  <td>{{ cheque.numeroCheque }}</td>
+                  <td>R$ {{ cheque.valor | number: '1.2-2' }}</td>
+                  <td>{{ cheque.dataCompensacao | date: 'dd/MM/yyyy' }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="cheque.compensado ? 'bg-success' : 'bg-warning text-dark'">
+                      {{ cheque.compensado ? 'Sim' : 'Não' }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #semCheques>
+            <span class="text-muted">Nenhum cheque informado.</span>
+          </ng-template>
+        </dd>
 
         <dt class="col-sm-4">Observações Internas</dt>
         <dd class="col-sm-8">{{ receitaSelecionada?.observacoesInternas || '-' }}</dd>
