@@ -9,7 +9,7 @@ import { LayoutComponent } from './core/layout/layout';
 import { ReceitasComponent } from './pages/receitas/receitas';
 import { Despesas } from './pages/despesas/despesas';
 import { Motoristas } from './pages/motoristas/motoristas';
-import { Caminhoes } from './pages/caminhoes/caminhoes';
+import { CaminhoesComponent } from './pages/caminhoes/caminhoes';
 import { Pessoas } from './pages/pessoas/pessoas';
 import { Usuarios } from './pages/usuarios/usuarios';
 import { ViagensComponent } from './pages/viagens/viagens';
@@ -23,7 +23,7 @@ export const routes: Routes = [
       { path: 'receitas', component: ReceitasComponent },
       { path: 'despesas', component: Despesas },
       { path: 'motoristas', component: Motoristas },
-      { path: 'caminhoes', component: Caminhoes },
+      { path: 'caminhoes', component: CaminhoesComponent },
       { path: 'pessoas', component: Pessoas },
       { path: 'usuarios', component: Usuarios },
       { path : 'viagens', component: ViagensComponent },
