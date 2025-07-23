@@ -1,15 +1,137 @@
 <div class="container-fluid mt-4">
-  <div class="d-flex align-items-center mb-3">
-    <div>
-      <h2 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
-        Gerenciamento de Caminhoes
-        <span class="icon-wrapper bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
-          <i class="bi bi-truck text-secondary fs-4 animated-icon"></i>
-        </span>
-      </h2>
-      <small class="text-muted">Visualize, cadastre e acompanhe os registros.</small>
+ <div class="d-flex align-items-center justify-content-between mb-3">
+     <div class="d-flex align-items-center mb-3">
+        <div>
+            <h2 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
+                Gerenciamento de Caminhões
+                <span class="icon-wrapper bg-light rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 42px; height: 42px;">
+                    <i class="bi {{ iconeAtual }} text-secondary fs-4 animated-icon"></i>
+                </span>
+            </h2>
+            <small class="text-muted">Visualize, cadastre e acompanhe seus lançamentos de caminhões existentes.</small>
+        </div>
+    </div>
+    <button class="btn btn-success" (click)="abrirFormulario()">
+      <i class="bi bi-plus-circle-fill me-1"></i>
+      Novo Caminhão
+    </button>
+  </div>
+
+  <!-- Formulário -->
+  <div *ngIf="exibirFormulario" class="card mb-4 animate__animated animate__fadeIn">
+    <div class="card-header">Formulário</div>
+    <div class="card-body">
+      <form #formCaminhao="ngForm" (ngSubmit)="salvarCaminhao(formCaminhao)">
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Placa do veículo</label>
+            <input type="text" name="placa" class="form-control" [(ngModel)]="modelo.placa" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Modelo</label>
+            <input type="text" name="modelo" class="form-control" [(ngModel)]="modelo.modelo" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Ano Modelo</label>
+            <input type="text" name="anoModelo" class="form-control" [(ngModel)]="modelo.anoModelo" required />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Capacidade de Carga</label>
+            <input type="text" name="capacidadeCarga" class="form-control" [(ngModel)]="modelo.capacidadeCarga" required />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Cor</label>
+            <input type="text" name="cor" class="form-control" [(ngModel)]="modelo.cor" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Número do Chassi</label>
+            <input type="text" name="chassi" class="form-control" [(ngModel)]="modelo.chassi" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Numero Renavam</label>
+            <input type="text" name="numeroRegistro" class="form-control" [(ngModel)]="modelo.numeroRegistro" />
+          </div>
+
+        </div>
+
+        <div class="text-end">
+          <button class="btn btn-primary" type="submit">Salvar</button>
+          <button class="btn btn-secondary ms-2" type="button" (click)="cancelar()">Cancelar</button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <!-- Conteúdo do formulário e listagem será implementado conforme regras específicas -->
+  <!-- Tabela -->
+  <div class="card">
+    <div class="card-header">Lista de Caminhões</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Placa</th>
+              <th>Modelo</th>
+              <th>Ano Modelo</th>
+              <th>Capacidade de Carga</th>
+              <th>Cor</th>
+              <th>Chassi</th>
+              <th>Número Renavam</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of displayedCaminhoes">
+              <td>{{ m.placa }}</td>
+              <td>{{ m.modelo }}</td>
+              <td>{{ m.anoModelo }}</td>
+              <td>{{ m.capacidadeCarga }}</td>
+              <td>{{ m.cor }}</td>
+              <td>{{ m.chassi }}</td>
+              <td>{{ m.numeroRegistro }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-secondary me-1" (click)="abrirModalDetalhes(m)" title="Visualizar">
+                  <i class="bi bi-eye-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="editarCaminhao(m)" title="Editar">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="excluirCaminhao(m.id)" title="Excluir">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshCaminhoes()"></ngb-pagination>
+    </div>
+  </div>
+
+  <!-- Modal Detalhes -->
+  <ng-template #modalDetalhes>
+    <div class="modal-header">
+      <h5 class="modal-title">Detalhes dos Caminhões</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modalService.dismissAll()"></button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Placa:</strong> {{ caminhaoSelecionado?.placa }}</li>
+        <li class="list-group-item"><strong>Modelo:</strong> {{ caminhaoSelecionado?.modelo }}</li>
+        <li class="list-group-item"><strong>Ano Modelo:</strong> {{ caminhaoSelecionado?.anoModelo }}</li>
+        <li class="list-group-item"><strong>Capacidade de Carga:</strong> {{ caminhaoSelecionado?.capacidadeCarga }}</li>
+        <li class="list-group-item"><strong>Cor:</strong> {{ caminhaoSelecionado?.cor }}</li>
+        <li class="list-group-item"><strong>Chassi:</strong> {{ caminhaoSelecionado?.chassi }}</li>
+        <li class="list-group-item"><strong>Número Renavam:</strong> {{ caminhaoSelecionado?.numeroRegistro || '-' }}</li>
+      </ul>
+    </div>
+  </ng-template>
 </div>
