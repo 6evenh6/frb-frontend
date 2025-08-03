@@ -18,16 +18,16 @@ export const routes: Routes = [
   {
     path: '', // Esta é a rota base que carregará o LayoutComponent
     component: LayoutComponent, // O LayoutComponent será renderizado aqui
-    children: [ // As rotas abaixo serão renderizadas DENTRO do <router-outlet> do LayoutComponent
-      { path: '', redirectTo: 'receitas', pathMatch: 'full' }, // Rota padrão ao acessar o layout
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' }, // Rota principal
+      { path: 'home', loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent) },
       { path: 'receitas', component: ReceitasComponent },
       { path: 'despesas', component: Despesas },
       { path: 'motoristas', component: Motoristas },
       { path: 'caminhoes', component: CaminhoesComponent },
       { path: 'pessoas', component: Pessoas },
       { path: 'usuarios', component: Usuarios },
-      { path : 'viagens', component: ViagensComponent },
-      // Qualquer outra rota de página que use o layout deve ser adicionada aqui
+      { path: 'viagens', component: ViagensComponent }
     ]
   },
   // Se você tiver rotas que NÃO devem usar o layout (ex: uma tela de Login separada),

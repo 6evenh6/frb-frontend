@@ -1,86 +1,73 @@
 /* src/app/layout/layout.component.scss */
 
-// Variáveis para consistência e fácil alteração
-$sidebar-width: 250px; // Largura da sidebar expandida
-$sidebar-collapsed-width: 70px; // Largura da sidebar colapsada
-$topbar-height: 60px; // Altura da topbar
+$sidebar-width: 250px;
+$sidebar-collapsed-width: 70px;
+$topbar-height: 60px;
 
-$primary-blue: #4e73df; // Azul primário (similar ao SB Admin)
-$light-gray-bg: #f8f9fc; // Fundo suave para o conteúdo principal
-$border-color: #eaecf4; // Cor de borda sutil
+$primary-blue: #4e73df;
+$light-gray-bg: #f8f9fc;
+$border-color: #eaecf4;
 
-:host { // Este é o <app-layout>
+:host {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; // Garante que o layout ocupe toda a altura da viewport
-  overflow: hidden; // Previne scroll horizontal indesejado
-  position: relative; // Contexto para elementos fixos
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 
-// POSICIONAMENTO DA SIDEBAR
-app-sidebar {
-  position: fixed; // Fixa a sidebar à esquerda
-  top: 0; // ****** AGORA A SIDEBAR COMEÇA DO TOPO ABSOLUTO ******
+app-topbar {
+  position: fixed;
+  top: 0;
   left: 0;
-  height: 100vh; // ****** E OCUPA 100% DA ALTURA DA VIEWPORT ******
-  z-index: 999; // Fica abaixo da topbar mas acima do conteúdo principal
-  width: $sidebar-width; // Largura padrão (será animada pela classe .collapsed)
-  // A transição de largura é controlada pelo :host do sidebar.component.scss
+  right: 0;
+  height: $topbar-height;
+  z-index: 1000;
+  background-color: var(--bs-light, #ffffff);
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  transition: all 0.3s ease-in-out;
 }
 
-// Classe que faz o componente <app-sidebar> colapsar visualmente
+app-sidebar {
+  position: fixed;
+  left: 0;
+  top: $topbar-height;
+  height: calc(100vh - #{$topbar-height});
+  z-index: 999;
+  width: $sidebar-width;
+  transition: all 0.3s ease-in-out;
+}
+
 app-sidebar.collapsed {
   width: $sidebar-collapsed-width;
 }
 
-// POSICIONAMENTO DA TOPBAR
-app-topbar {
-  position: fixed; // Fixa a topbar no topo
-  top: 0;
-  height: $topbar-height;
-  z-index: 1000; // Garante que a topbar fique sempre por cima da sidebar
-  background-color: var(--bs-light, #ffffff); // Cor de fundo (branco)
-  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15); // Sombra elegante (estilo SB Admin)
-  transition: all 0.3s ease-in-out; // Transição suave para left e width
-
-  // Topbar quando a sidebar está expandida (estado padrão)
-  // ****** AGORA A TOPBAR COMEÇA APÓS A SIDEBAR ******
-  left: $sidebar-width;
-  width: calc(100% - #{$sidebar-width}); // Ocupa o resto da largura
-
-  // Topbar quando a sidebar está colapsada
-  &.topbar-collapsed {
-    left: $sidebar-collapsed-width;
-    width: calc(100% - #{$sidebar-collapsed-width});
-  }
-}
-
-// CONTÊINER PRINCIPAL PARA O CONTEÚDO (sidebar e main-content-area)
 .main-layout {
   display: flex;
-  flex-grow: 1; // Permite que ocupe o espaço restante verticalmente
-  // ****** REMOVIDO: margin-top: $topbar-height; ******
-  // Agora a topbar e sidebar são fixas e o conteúdo principal vai respeitar isso.
-  width: 100%; // Ocupa a largura total
+  flex-grow: 1;
+  width: 100%;
 }
 
-
-// POSICIONAMENTO DA ÁREA DE CONTEÚDO PRINCIPAL
 .main-content-area {
-  flex-grow: 1; // Ocupa o espaço restante horizontalmente
-  // ****** AGORA A MARGEM ESQUERDA EMPURRA O CONTEÚDO PARA A DIREITA DA SIDEBAR ******
+  flex-grow: 1;
   margin-left: $sidebar-width;
-  // ****** E A MARGEM SUPERIOR CRIA ESPAÇO PARA A TOPBAR FIXA ******
   margin-top: $topbar-height;
-  padding: 1.5rem; // Espaçamento interno para o conteúdo (similar ao SB Admin)
-  transition: margin-left 0.3s ease-in-out; // Transição suave para a margem
-  overflow-y: auto; // Permite scroll vertical apenas no conteúdo principal
-  // ****** CALCULA A ALTURA DO CONTEÚDO MENOS A ALTURA DA TOPBAR FIXA ******
+  padding: 1.5rem;
+  transition: margin-left 0.3s ease;
+  overflow-y: auto;
   height: calc(100vh - #{$topbar-height});
-  background-color: $light-gray-bg; // Fundo suave para a área de conteúdo
+  background-color: $light-gray-bg;
 }
 
-// Ajusta a margem esquerda do conteúdo quando a sidebar está colapsada
 .main-content-area.main-content-collapsed {
   margin-left: $sidebar-collapsed-width;
+}
+
+.main-content-area {
+  margin-left: $sidebar-width;
+  transition: margin-left 0.3s ease;
+  
+  &.main-content-collapsed {
+    margin-left: $sidebar-collapsed-width;
+  }
 }

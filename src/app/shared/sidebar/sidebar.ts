@@ -1,4 +1,6 @@
-import { Component, Input, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
+// src/app/shared/sidebar/sidebar.ts
+
+import { Component, Input, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -9,19 +11,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.scss']
 })
-export class SidebarComponent implements OnChanges {
+export class SidebarComponent {
   @Input() collapsed = false;
 
-  constructor(private el: ElementRef) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const body = document.querySelector('body');
-    if (!body) return;
-
-    if (this.collapsed) {
-      body.classList.add('sidebar-collapsed');
-    } else {
-      body.classList.remove('sidebar-collapsed');
-    }
+  @HostBinding('class.collapsed') get isCollapsed() {
+    return this.collapsed;
   }
 }

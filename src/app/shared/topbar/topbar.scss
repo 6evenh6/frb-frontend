@@ -1,15 +1,15 @@
-/* src/app/shared/topbar/topbar.scss */
-
-// ****** DEFINIÇÃO DE VARIÁVEIS ******
 $topbar-height: 60px;
 $primary-blue: #4e73df;
 $dark-text: #5a5c69;
 $light-text: #858796;
 $border-color: #eaecf4;
-$light-gray-bg: #f8f9fc; // Variável definida aqui
+$light-gray-bg: #f8f9fc;
 $danger-red: #e74a3b;
 $success-green: #1cc88a;
 $warning-yellow: #f6c23e;
+
+// Adicione a variável da cor da sidebar para manter a consistência
+$sidebar-bg: #2c3e50;
 
 :host {
   display: block;
@@ -17,12 +17,12 @@ $warning-yellow: #f6c23e;
 
 .navbar {
   height: 100%;
-  background-color: #ffffff;
+  background-color: $sidebar-bg; /* Altera a cor de fundo para a cor da sidebar */
   padding: 0 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid $border-color;
+  // border-bottom: 0.1px solid $border-color;
 }
 
 .btn-link {

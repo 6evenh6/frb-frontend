@@ -22,120 +22,139 @@ body {
   padding: 1rem 0;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
   transition: width 0.3s ease;
-
-  &.collapsed {
-    width: $sidebar-collapsed-width;
-
-    .sidebar-menu-item-text,
-    .toggle-icon {
-      display: none;
-    }
-
-    .collapse {
-      display: none !important;
-    }
-  }
 }
 
 .sidebar-brand {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: white;
-  text-transform: uppercase;
-  text-decoration: none;
+  padding: 0.5rem 1rem; /* Ajuste o padding vertical de 1.5rem para 0.5rem */
 
-  .sidebar-brand-icon i {
-    font-size: 1.7rem;
-    margin-right: 0.5rem;
+  .sidebar-brand-icon {
+    font-size: 2rem;
+    color: #ffffff;
+    transition: margin 0.3s ease;
+  }
+
+  .sidebar-brand-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.3s ease, width 0.3s ease;
   }
 }
 
 .sidebar-divider {
-  border-top: 1px solid $sidebar-divider-color;
-  margin: 1rem 0;
+  border: none;
+  height: 1px;
+  background-color: $sidebar-divider-color;
+  margin: 1.5rem 0;
+  transition: opacity 0.3s ease;
 }
 
 .nav-list {
   list-style: none;
-  padding-left: 0;
+  padding: 0;
   margin: 0;
 }
 
 .nav-item {
-  .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    color: $sidebar-text-color;
-    padding: 0.75rem 1rem;
-    font-weight: 500;
-    text-decoration: none;
-    border-radius: 0.35rem;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
 
-    i {
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
+.nav-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  color: $sidebar-text-color;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0.35rem;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
-    .toggle-icon {
-      margin-left: auto;
-      transition: transform 0.3s ease;
-    }
-
-    &:hover {
-      background-color: $sidebar-hover-bg;
-      color: #ffffff;
-    }
-
-    &.active {
-      background-color: $sidebar-active-bg;
-      font-weight: 600;
-      color: #ffffff;
-    }
-
-    &[aria-expanded="true"] .toggle-icon {
-      transform: rotate(180deg);
-    }
+  i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
   }
 
-  .collapse {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.35s ease-in-out, padding 0.3s ease-in-out;
+  .toggle-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+  }
 
-    &.show {
-      max-height: 1000px;
-    }
+  &:hover {
+    background-color: $sidebar-hover-bg;
+    color: #ffffff;
+  }
 
-    ul {
-      padding-top: 0.3rem;
-      padding-bottom: 0.3rem;
-    }
+  &.active {
+    background-color: $sidebar-active-bg;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  &[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
   }
 }
-body.sidebar-collapsed {
+
+.collapse {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease-in-out, padding 0.3s ease-in-out;
+
+  &.show {
+    max-height: 500px; // Valor grande o suficiente para a transição
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+// ============== REGRAS PARA O ESTADO COLAPSADO =================
+// O seletor ':host' se refere ao elemento <app-sidebar>
+// As regras abaixo só se aplicam quando a classe 'collapsed' está presente nele.
+
+:host.collapsed {
   .sidebar {
-    width: 70px;
+    width: $sidebar-collapsed-width;
 
-    .sidebar-brand-text {
-      display: none !important;
+    .sidebar-brand {
+      justify-content: center;
+
+      .sidebar-brand-icon {
+        margin-right: 0;
+      }
+
+      .sidebar-brand-text {
+        display: none;
+      }
     }
 
-    .nav-item .nav-link span.sidebar-menu-item-text {
-      display: none !important;
+    .sidebar-divider {
+      opacity: 0;
     }
 
+    .nav-link {
+      justify-content: center;
+      padding: 0.75rem 0;
+
+      .sidebar-menu-item-text {
+        display: none; // Esconde o texto do item de menu
+      }
+
+      .toggle-icon {
+        display: none; // Esconde o ícone de toggle do submenu
+      }
+    }
+
+    // Esta regra garante que os sub-menus não se expandam quando a sidebar está colapsada
     .nav-item .collapse {
-      display: none !important;
-    }
-
-    .toggle-icon {
       display: none !important;
     }
   }
