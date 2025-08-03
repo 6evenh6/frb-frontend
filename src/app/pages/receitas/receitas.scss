@@ -1,0 +1,43 @@
+table {
+  width: 100%;
+  table-layout: auto;
+
+  th, td {
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 0.5rem 0.75rem;
+  }
+
+  // Estiliza ações
+  td.text-center {
+    min-width: 100px;
+  }
+}
+
+// Responsividade específica para observações e texto longo
+td.text-break {
+  word-break: break-word;
+  max-width: 200px;
+}
+
+// Melhora visual em telas muito pequenas
+@media (max-width: 576px) {
+  table {
+    font-size: 0.85rem;
+  }
+
+  td,
+  th {
+    padding: 0.4rem;
+  }
+}
+
+.icon-wrapper {
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.1); opacity: 0.85; }
+  100% { transform: scale(1); opacity: 1; }
+}

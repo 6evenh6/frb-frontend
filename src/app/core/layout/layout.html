@@ -1,0 +1,11 @@
+<div class="app-container">
+  <app-topbar (toggle)="onToggleSidebar()" [ngClass]="{'topbar-collapsed': sidebarCollapsed}"></app-topbar>
+
+  <div class="main-layout">
+    <app-sidebar [collapsed]="sidebarCollapsed" [ngClass]="{'collapsed': sidebarCollapsed}"></app-sidebar>
+
+    <div class="main-content-area" [ngClass]="{'main-content-collapsed': sidebarCollapsed}">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

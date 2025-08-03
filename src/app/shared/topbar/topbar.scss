@@ -1,0 +1,206 @@
+$topbar-height: 60px;
+$primary-blue: #4e73df;
+$dark-text: #5a5c69;
+$light-text: #858796;
+$border-color: #eaecf4;
+$light-gray-bg: #f8f9fc;
+$danger-red: #e74a3b;
+$success-green: #1cc88a;
+$warning-yellow: #f6c23e;
+
+// Adicione a variável da cor da sidebar para manter a consistência
+$sidebar-bg: #2c3e50;
+
+:host {
+  display: block;
+}
+
+.navbar {
+  height: 100%;
+  background-color: $sidebar-bg; /* Altera a cor de fundo para a cor da sidebar */
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // border-bottom: 0.1px solid $border-color;
+}
+
+.btn-link {
+  color: $dark-text;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 0.35rem;
+
+  &:hover {
+    background-color: rgba($primary-blue, 0.1);
+    color: $primary-blue;
+  }
+  &:active, &:focus {
+    box-shadow: none;
+    background-color: rgba($primary-blue, 0.15);
+  }
+}
+
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-item {
+  position: relative;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem;
+    height: $topbar-height;
+    color: $dark-text;
+    font-size: 0.9rem;
+
+    i {
+      font-size: 1.25rem;
+      color: $light-text;
+      vertical-align: middle;
+    }
+  }
+
+  .badge-counter {
+    position: absolute;
+    transform: scale(0.7);
+    transform-origin: top right;
+    right: -0.2rem;
+    top: 0.2rem;
+    font-size: 0.5rem;
+    font-weight: normal;
+    padding: 0.25em 0.4em;
+    line-height: 1;
+    border-radius: 0.25rem;
+    background-color: $danger-red;
+    color: white;
+  }
+}
+
+.topbar-divider {
+  width: 0;
+  border-right: 1px solid $border-color;
+  height: calc($topbar-height * 0.5);
+  margin: auto 1rem;
+}
+
+.img-profile {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid $border-color;
+  margin-left: 0.5rem;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 0.35rem;
+  font-size: 0.85rem;
+  max-width: 320px;
+
+  &.dropdown-menu-right {
+    // Estas propriedades são geralmente controladas pelo JS do Bootstrap,
+    // mas podem ser forçadas se necessário.
+    // right: 0 !important;
+    // left: auto !important;
+  }
+
+  @media (max-width: 575.98px) {
+    left: 10px !important;
+    right: 10px !important;
+    width: calc(100% - 20px) !important;
+    max-width: none !important;
+  }
+}
+
+.dropdown-list {
+  padding: 0;
+
+  .dropdown-header {
+    background-color: $primary-blue;
+    border: 1px solid $primary-blue;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    color: white;
+    font-weight: 800;
+    border-bottom: none;
+    font-size: 0.8rem;
+    border-top-left-radius: calc(0.35rem - 1px);
+    border-top-right-radius: calc(0.35rem - 1px);
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    white-space: normal;
+    line-height: 1.2;
+    color: $dark-text;
+
+    &:active, &:focus, &:hover {
+      color: $dark-text;
+      text-decoration: none;
+      background-color: $light-gray-bg; // Uso da variável
+    }
+
+    .icon-circle {
+      height: 2.5rem;
+      width: 2.5rem;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      i {
+        color: white;
+        font-size: 1.1rem;
+      }
+      &.bg-primary { background-color: $primary-blue !important; }
+      &.bg-success { background-color: $success-green !important; }
+      &.bg-warning { background-color: $warning-yellow !important; }
+      &.bg-danger { background-color: $danger-red !important; }
+    }
+
+    .dropdown-list-image {
+      position: relative;
+      height: 2.5rem;
+      width: 2.5rem;
+      flex-shrink: 0;
+
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      .status-indicator {
+        background-color: $light-text;
+        height: 0.75rem;
+        width: 0.75rem;
+        border-radius: 100%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border: 0.125rem solid #fff;
+      }
+      .status-indicator.bg-success { background-color: $success-green !important; }
+      .status-indicator.bg-warning { background-color: $warning-yellow !important; }
+      .status-indicator.bg-danger { background-color: $danger-red !important; }
+    }
+  }
+}

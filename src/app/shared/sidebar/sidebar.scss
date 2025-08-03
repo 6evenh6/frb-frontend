@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+// VARIÁVEIS
+$sidebar-width: 250px;
+$sidebar-collapsed-width: 80px;
+$sidebar-bg: #2c3e50;
+$sidebar-text-color: rgba(255, 255, 255, 0.9);
+$sidebar-hover-bg: rgba(255, 255, 255, 0.1);
+$sidebar-active-bg: rgba(255, 255, 255, 0.15);
+$sidebar-divider-color: rgba(255, 255, 255, 0.15);
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: $sidebar-bg;
+  color: $sidebar-text-color;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 1rem 0;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+  transition: width 0.3s ease;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem; /* Ajuste o padding vertical de 1.5rem para 0.5rem */
+
+  .sidebar-brand-icon {
+    font-size: 2rem;
+    color: #ffffff;
+    transition: margin 0.3s ease;
+  }
+
+  .sidebar-brand-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.3s ease, width 0.3s ease;
+  }
+}
+
+.sidebar-divider {
+  border: none;
+  height: 1px;
+  background-color: $sidebar-divider-color;
+  margin: 1.5rem 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.nav-link {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  color: $sidebar-text-color;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 0.35rem;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .toggle-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background-color: $sidebar-hover-bg;
+    color: #ffffff;
+  }
+
+  &.active {
+    background-color: $sidebar-active-bg;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  &[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.collapse {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.35s ease-in-out, padding 0.3s ease-in-out;
+
+  &.show {
+    max-height: 500px; // Valor grande o suficiente para a transição
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+// ============== REGRAS PARA O ESTADO COLAPSADO =================
+// O seletor ':host' se refere ao elemento <app-sidebar>
+// As regras abaixo só se aplicam quando a classe 'collapsed' está presente nele.
+
+:host.collapsed {
+  .sidebar {
+    width: $sidebar-collapsed-width;
+
+    .sidebar-brand {
+      justify-content: center;
+
+      .sidebar-brand-icon {
+        margin-right: 0;
+      }
+
+      .sidebar-brand-text {
+        display: none;
+      }
+    }
+
+    .sidebar-divider {
+      opacity: 0;
+    }
+
+    .nav-link {
+      justify-content: center;
+      padding: 0.75rem 0;
+
+      .sidebar-menu-item-text {
+        display: none; // Esconde o texto do item de menu
+      }
+
+      .toggle-icon {
+        display: none; // Esconde o ícone de toggle do submenu
+      }
+    }
+
+    // Esta regra garante que os sub-menus não se expandam quando a sidebar está colapsada
+    .nav-item .collapse {
+      display: none !important;
+    }
+  }
+}

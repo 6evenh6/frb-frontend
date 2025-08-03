@@ -1,0 +1,139 @@
+<div class="container-fluid mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+     <div class="d-flex align-items-center mb-3">
+        <div>
+            <h2 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
+                Gerenciamento de Motoristas
+                <span class="icon-wrapper bg-light rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 42px; height: 42px;">
+                    <i class="bi {{ iconeAtual }} text-secondary fs-4 animated-icon"></i>
+                </span>
+            </h2>
+            <small class="text-muted">Visualize, cadastre e acompanhe seus lançamentos de motoristas existentes.</small>
+        </div>
+    </div>
+    <button class="btn btn-success" (click)="abrirFormulario()">
+      <i class="bi bi-plus-circle-fill me-1"></i>
+      Novo Motorista
+    </button>
+  </div>
+
+  <!-- Formulário -->
+  <div *ngIf="exibirFormulario" class="card mb-4 animate__animated animate__fadeIn">
+    <div class="card-header">Formulário</div>
+    <div class="card-body">
+      <form #formMotorista="ngForm" (ngSubmit)="salvarMotorista(formMotorista)">
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nome</label>
+            <input type="text" name="nome" class="form-control" [(ngModel)]="modelo.nome" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">CPF</label>
+            <input type="text" name="cpf" class="form-control" [(ngModel)]="modelo.cpf" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">CNH</label>
+            <input type="text" name="cnh" class="form-control" [(ngModel)]="modelo.cnh" required />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Categoria CNH</label>
+            <input type="text" name="categoriaCNH" class="form-control" [(ngModel)]="modelo.categoriaCNH" required />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Validade CNH</label>
+            <input type="date" name="validadeCNH" class="form-control" [(ngModel)]="modelo.validadeCNH" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Telefone</label>
+            <input type="text" name="telefone" class="form-control" [(ngModel)]="modelo.telefone" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">E-mail (opcional)</label>
+            <input type="email" name="email" class="form-control" [(ngModel)]="modelo.email" />
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Observações</label>
+            <textarea name="observacoes" rows="3" class="form-control" [(ngModel)]="modelo.observacoes"></textarea>
+          </div>
+
+        </div>
+
+        <div class="text-end">
+          <button class="btn btn-primary" type="submit">Salvar</button>
+          <button class="btn btn-secondary ms-2" type="button" (click)="cancelar()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabela -->
+  <div class="card">
+    <div class="card-header">Lista de Motoristas</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>CNH</th>
+              <th>Categoria</th>
+              <th>Telefone</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of displayedMotoristas">
+              <td>{{ m.nome }}</td>
+              <td>{{ m.cpf }}</td>
+              <td>{{ m.cnh }}</td>
+              <td>{{ m.categoriaCNH }}</td>
+              <td>{{ m.telefone }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-secondary me-1" (click)="abrirModalDetalhes(m)" title="Visualizar">
+                  <i class="bi bi-eye-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="editarMotorista(m)" title="Editar">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="excluirMotorista(m.id)" title="Excluir">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshMotoristas()"></ngb-pagination>
+    </div>
+  </div>
+
+  <!-- Modal Detalhes -->
+  <ng-template #modalDetalhes>
+    <div class="modal-header">
+      <h5 class="modal-title">Detalhes do Motorista</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modalService.dismissAll()"></button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Nome:</strong> {{ motoristaSelecionado?.nome }}</li>
+        <li class="list-group-item"><strong>CPF:</strong> {{ motoristaSelecionado?.cpf }}</li>
+        <li class="list-group-item"><strong>CNH:</strong> {{ motoristaSelecionado?.cnh }}</li>
+        <li class="list-group-item"><strong>Categoria CNH:</strong> {{ motoristaSelecionado?.categoriaCNH }}</li>
+        <li class="list-group-item"><strong>Validade CNH:</strong> {{ motoristaSelecionado?.validadeCNH | date }}</li>
+        <li class="list-group-item"><strong>Telefone:</strong> {{ motoristaSelecionado?.telefone }}</li>
+        <li class="list-group-item"><strong>Email:</strong> {{ motoristaSelecionado?.email || '-' }}</li>
+        <li class="list-group-item"><strong>Observações:</strong> {{ motoristaSelecionado?.observacoes || '-' }}</li>
+      </ul>
+    </div>
+  </ng-template>
+</div>

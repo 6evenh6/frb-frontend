@@ -1,0 +1,194 @@
+<div class="container-fluid mt-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center mb-3">
+            <div>
+                <h2 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
+                    Pessoas
+                    <span class="icon-wrapper bg-light rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 42px; height: 42px;">
+                        <i class="bi {{ iconeAtual }} text-secondary fs-4 animated-icon"></i>
+                    </span>
+                </h2>
+                <small class="text-muted">Visualize, cadastre e acompanhe empresas fisicas e jurídicas no
+                    sistema.</small>
+            </div>
+        </div>
+        <button class="btn btn-success" (click)="abrirFormulario()">
+            <i class="bi bi-plus-circle-fill me-1"></i>
+            Novo Cadastro
+        </button>
+    </div>
+
+    <!-- Formulário -->
+    <div *ngIf="exibirFormulario" class="card mb-4 animate__animated animate__fadeIn">
+        <div class="card-header">Formulário</div>
+        <div class="card-body">
+            <form #formPessoas="ngForm" (ngSubmit)="salvarPessoa(formPessoas)">
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Tipo de Pessoa</label>
+                        <select class="form-select" name="tipo" [(ngModel)]="modelo.tipo" required>
+                            <option [ngValue]="TipoPessoa.PessoaFisica">Pessoa Física</option>
+                            <option [ngValue]="TipoPessoa.PessoaJuridica">Pessoa Jurídica</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-8 mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" name="nome" class="form-control" [(ngModel)]="modelo.nome" required />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Documento (CPF ou CNPJ)</label>
+                        <input type="text" name="documento" class="form-control" [(ngModel)]="modelo.documento"
+                            required />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Inscrição Estadual</label>
+                        <input type="text" name="inscricaoEstadual" class="form-control"
+                            [(ngModel)]="modelo.inscricaoEstadual" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Telefone</label>
+                        <input type="text" name="telefone" class="form-control" [(ngModel)]="modelo.telefone" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Celular</label>
+                        <input type="text" name="celular" class="form-control" [(ngModel)]="modelo.celular" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">E-mail</label>
+                        <input type="email" name="email" class="form-control" [(ngModel)]="modelo.email" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Endereço</label>
+                        <input type="text" name="endereco" class="form-control" [(ngModel)]="modelo.endereco" />
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Bairro</label>
+                        <input type="text" name="bairro" class="form-control" [(ngModel)]="modelo.bairro" />
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Cidade</label>
+                        <input type="text" name="cidade" class="form-control" [(ngModel)]="modelo.cidade" />
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">Estado</label>
+                        <input type="text" name="estado" class="form-control" [(ngModel)]="modelo.estado" />
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">CEP</label>
+                        <input type="text" name="cep" class="form-control" [(ngModel)]="modelo.cep" />
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nome do Responsável</label>
+                        <input type="text" name="nomeResponsavel" class="form-control"
+                            [(ngModel)]="modelo.nomeResponsavel" />
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Nascimento/Fundação</label>
+                        <input type="date" name="dataNascimentoOuFundacao" class="form-control"
+                            [(ngModel)]="modelo.dataNascimentoOuFundacao" />
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Observações</label>
+                        <textarea name="observacoes" class="form-control" [(ngModel)]="modelo.observacoes"
+                            rows="3"></textarea>
+                    </div>
+
+                </div>
+
+
+                <div class="text-end">
+                    <button class="btn btn-primary" type="submit">Salvar</button>
+                    <button class="btn btn-secondary ms-2" type="button" (click)="cancelar()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabela -->
+    <div class="card">
+        <div class="card-header">Lista de Viagens</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Nome</th>
+                            <th>Documento</th>
+                            <th>IE</th>
+                            <th>Celular</th>
+                            <th>Tel</th>
+                            <th>Responsável</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let m of displayedViagens">
+                            <td>{{ m.tipo === TipoPessoa.PessoaFisica ? 'Pessoa Física' : 'Pessoa Jurídica' }}</td>
+                            <td>{{ m.nome }}</td>
+                            <td>{{ m.documento }}</td>
+                            <td>{{ m.inscricaoEstadual }}</td>
+                            <td>{{ m.celular }}</td>
+                            <td>{{ m.telefone }}</td>
+                            <td>{{ m.nomeResponsavel }}</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-secondary me-1" (click)="abrirModalDetalhes(m)"
+                                    title="Visualizar">
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary me-1" (click)="editarPessoa(m)"
+                                    title="Editar">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" (click)="excluirPessoa(m.id)"
+                                    title="Excluir">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                (pageChange)="refreshPessoas()"></ngb-pagination>
+        </div>
+    </div>
+
+    <!-- Modal Detalhes -->
+    <ng-template #modalDetalhes>
+        <div class="modal-header">
+            <h5 class="modal-title">Detalhes da Pessoa</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modalService.dismissAll()"></button>
+        </div>
+        <div class="modal-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Tipo:</strong>
+                    {{ pessoaSelecionada?.tipo === TipoPessoa.PessoaFisica ? 'Pessoa Física' : 'Pessoa Jurídica' }}
+                </li>
+                <li class="list-group-item"><strong>Nome:</strong> {{ pessoaSelecionada?.nome }}</li>
+                <li class="list-group-item"><strong>Documento:</strong> {{ pessoaSelecionada?.documento }}</li>
+                <li class="list-group-item"><strong>IE:</strong> {{ pessoaSelecionada?.inscricaoEstadual }}</li>
+                <li class="list-group-item"><strong>Celular:</strong> {{ pessoaSelecionada?.celular }}</li>
+                <li class="list-group-item"><strong>Telefone:</strong> {{ pessoaSelecionada?.telefone }}</li>
+                <li class="list-group-item"><strong>Responsável:</strong> {{ pessoaSelecionada?.nomeResponsavel }}</li>
+            </ul>
+        </div>
+    </ng-template>
+</div>

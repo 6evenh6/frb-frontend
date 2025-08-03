@@ -1,0 +1,123 @@
+<div class="container-fluid mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div class="d-flex align-items-center mb-3">
+      <div>
+        <h2 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
+          Gerenciamento de Viagens
+          <span class="icon-wrapper bg-light rounded-circle d-flex align-items-center justify-content-center"
+            style="width: 42px; height: 42px;">
+            <i class="bi {{ iconeAtual }} text-secondary fs-4 animated-icon"></i>
+          </span>
+        </h2>
+        <small class="text-muted">Visualize, cadastre e acompanhe seus lançamentos de viagens futuras e
+          existentes.</small>
+      </div>
+    </div>
+    <button class="btn btn-success" (click)="abrirFormulario()">
+      <i class="bi bi-plus-circle-fill me-1"></i>
+      Nova Viagem
+    </button>
+  </div>
+
+  <!-- Formulário -->
+  <div *ngIf="exibirFormulario" class="card mb-4 animate__animated animate__fadeIn">
+    <div class="card-header">Formulário</div>
+    <div class="card-body">
+      <form #formViagem="ngForm" (ngSubmit)="salvarViagem(formViagem)">
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Origem</label>
+            <input type="text" name="origem" class="form-control" [(ngModel)]="modelo.nome" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Destino</label>
+            <input type="text" name="destino" class="form-control" [(ngModel)]="modelo.cpf" required />
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Data de Saída</label>
+            <input type="date" name="datasaida" class="form-control" [(ngModel)]="modelo.cnh" required />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Data da Chegada</label>
+            <input type="date" name="datachegada" class="form-control" [(ngModel)]="modelo.categoriaCNH" required />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label class="form-label">Empresa Contratante</label>
+            <input type="text" name="pessoaid" class="form-control" [(ngModel)]="modelo.validadeCNH" required />
+          </div>
+        </div>
+
+        <div class="text-end">
+          <button class="btn btn-primary" type="submit">Salvar</button>
+          <button class="btn btn-secondary ms-2" type="button" (click)="cancelar()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tabela -->
+  <div class="card">
+    <div class="card-header">Lista de Viagens</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Origem</th>
+              <th>Destino</th>
+              <th>Data de Saída</th>
+              <th>Data da Chegada</th>
+              <th>Empresa Contratante</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of displayedViagens">
+              <td>{{ m.origem}}</td>
+              <td>{{ m.destino }}</td>
+              <td>{{ m.datasaida | date }}</td>
+              <td>{{ m.datachegada | date }}</td>
+              <td>{{ m.pessoaid }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-secondary me-1" (click)="abrirModalDetalhes(m)"
+                  title="Visualizar">
+                  <i class="bi bi-eye-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-primary me-1" (click)="editarViagem(m)" title="Editar">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="excluirViagem(m.id)" title="Excluir">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+        (pageChange)="refreshViagens()"></ngb-pagination>
+    </div>
+  </div>
+
+  <!-- Modal Detalhes -->
+  <ng-template #modalDetalhes>
+    <div class="modal-header">
+      <h5 class="modal-title">Detalhes da Viagem </h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modalService.dismissAll()"></button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Origem:</strong> {{ viagemSelecionada?.origem }}</li>
+        <li class="list-group-item"><strong>Destino:</strong> {{ viagemSelecionada?.destino }}</li>
+        <li class="list-group-item"><strong>Data de Saída:</strong> {{ viagemSelecionada?.datasaida | date }}</li>
+        <li class="list-group-item"><strong>Data de Chegada:</strong> {{ viagemSelecionada?.datachegada | date }}</li>
+        <li class="list-group-item"><strong>Empresa Contratante:</strong> {{ viagemSelecionada?.pessoaid}}</li>
+      </ul>
+    </div>
+  </ng-template>
+</div>
