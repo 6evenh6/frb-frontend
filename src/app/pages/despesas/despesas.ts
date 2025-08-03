@@ -17,6 +17,7 @@ import { CreateDespesa } from '../../models/despesas.model'; // ajuste o caminho
 export class Despesas implements OnInit {
   modelo: CreateDespesa = this.novoModelo();
   despesaSelecionada: any;
+  exibirFormulario = false;
 
   @ViewChild('modalDetalhes') modalDetalhes!: TemplateRef<any>;
 
@@ -124,6 +125,11 @@ export class Despesas implements OnInit {
     };
   }
 
+  abrirFormulario(): void {
+    this.exibirFormulario = true;
+    this.modelo = this.novoModelo();
+  }
+
   salvarDespesa(form: NgForm): void {
     if (!form.valid) return;
 
@@ -143,6 +149,7 @@ export class Despesas implements OnInit {
         this.refreshDespesas();
         form.resetForm();
         this.modelo = this.novoModelo();
+        this.exibirFormulario = false;
 
         Swal.fire({
           title: 'Sucesso!',
@@ -168,18 +175,20 @@ export class Despesas implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.modelo = this.novoModelo();
+        this.exibirFormulario = false;
       }
     });
+  }
+
+  editarDespesa(despesa: any): void {
+    this.modelo = { ...despesa };
+    this.exibirFormulario = true;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   abrirModalDetalhes(despesa: any): void {
     this.despesaSelecionada = despesa;
     this.modalService.open(this.modalDetalhes, { size: 'lg' });
-  }
-
-  editarDespesa(despesa: any): void {
-    this.modelo = { ...despesa };
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   excluirDespesa(id: number): void {

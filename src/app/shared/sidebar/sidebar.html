@@ -4,61 +4,83 @@
     <div class="sidebar-brand-icon rotate-n-15">
       <i class="bi bi-truck-flatbed"></i>
     </div>
-    <div class="sidebar-brand-text mx-4 sidebar-menu-item-text">Frb System</div>
+    <div class="sidebar-brand-text mx-4 sidebar-menu-item-text">FRB System</div>
   </a>
 
-  <hr class="sidebar-divider my-0">
+  <hr class="sidebar-divider my-0" />
 
   <ul class="nav-list">
 
+    <!-- GERENCIAMENTO -->
     <li class="nav-item">
-      <a class="nav-link" routerLink="/receitas" routerLinkActive="active">
-        <i class="bi bi-wallet-fill"></i> <span class="sidebar-menu-item-text">Receitas</span> </a>
+      <a class="nav-link collapsed d-flex align-items-center" href="#" role="button"
+         data-bs-toggle="collapse" data-bs-target="#collapseGerenciamento"
+         aria-expanded="false" aria-controls="collapseGerenciamento">
+        <i class="bi bi-gear-fill"></i>
+        <span class="sidebar-menu-item-text flex-grow-1">Gerenciamento</span>
+        <i class="bi bi-chevron-down toggle-icon"></i>
+      </a>
+      <div id="collapseGerenciamento" class="collapse" data-bs-parent=".nav-list">
+        <ul class="nav flex-column ps-4" role="menu" aria-label="Gerenciamento">
+          <li><a class="nav-link" routerLink="/motoristas" routerLinkActive="active"><i class="bi bi-person-badge-fill"></i> Motoristas</a></li>
+          <li><a class="nav-link" routerLink="/caminhoes" routerLinkActive="active"><i class="bi bi-truck"></i> Caminhões</a></li>
+          <li><a class="nav-link" routerLink="/pessoas" routerLinkActive="active"><i class="bi bi-people-fill"></i> Pessoas</a></li>
+          <li><a class="nav-link" routerLink="/usuarios" routerLinkActive="active"><i class="bi bi-person-circle"></i> Usuários</a></li>
+        </ul>
+      </div>
     </li>
 
+    <!-- FINANCEIRO -->
     <li class="nav-item">
-      <a class="nav-link" routerLink="/despesas" routerLinkActive="active">
-        <i class="bi bi-cash-stack"></i>
-        <span class="sidebar-menu-item-text">Despesas</span>
+      <a class="nav-link collapsed d-flex align-items-center" href="#" role="button"
+         data-bs-toggle="collapse" data-bs-target="#collapseFinanceiro"
+         aria-expanded="false" aria-controls="collapseFinanceiro">
+        <i class="bi bi-wallet2"></i>
+        <span class="sidebar-menu-item-text flex-grow-1">Financeiro</span>
+        <i class="bi bi-chevron-down toggle-icon"></i>
       </a>
+      <div id="collapseFinanceiro" class="collapse" data-bs-parent=".nav-list">
+        <ul class="nav flex-column ps-4" role="menu" aria-label="Financeiro">
+          <li><a class="nav-link" routerLink="/receitas" routerLinkActive="active"><i class="bi bi-wallet-fill"></i> Receitas</a></li>
+          <li><a class="nav-link" routerLink="/despesas" routerLinkActive="active"><i class="bi bi-cash-stack"></i> Despesas</a></li>
+        </ul>
+      </div>
     </li>
+
+    <!-- OPERACIONAL -->
     <li class="nav-item">
-      <a class="nav-link" routerLink="/viagens" routerLinkActive="active">
+      <a class="nav-link collapsed d-flex align-items-center" href="#" role="button"
+         data-bs-toggle="collapse" data-bs-target="#collapseOperacional"
+         aria-expanded="false" aria-controls="collapseOperacional">
         <i class="bi bi-truck-front-fill"></i>
-        <span class="sidebar-menu-item-text">Viagens</span>
+        <span class="sidebar-menu-item-text flex-grow-1">Operacional</span>
+        <i class="bi bi-chevron-down toggle-icon"></i>
       </a>
+      <div id="collapseOperacional" class="collapse" data-bs-parent=".nav-list">
+        <ul class="nav flex-column ps-4" role="menu" aria-label="Operacional">
+          <li><a class="nav-link" routerLink="/viagens" routerLinkActive="active"><i class="bi bi-truck-front"></i> Viagens</a></li>
+        </ul>
+      </div>
     </li>
 
+    <!-- RELATÓRIOS -->
     <li class="nav-item">
-      <a class="nav-link" routerLink="/motoristas" routerLinkActive="active">
-        <i class="bi bi-person-badge-fill"></i>
-        <span class="sidebar-menu-item-text">Motoristas</span>
+      <a class="nav-link collapsed d-flex align-items-center" href="#" role="button"
+         data-bs-toggle="collapse" data-bs-target="#collapseRelatorios"
+         aria-expanded="false" aria-controls="collapseRelatorios">
+        <i class="bi bi-bar-chart-fill"></i>
+        <span class="sidebar-menu-item-text flex-grow-1">Relatórios</span>
+        <i class="bi bi-chevron-down toggle-icon"></i>
       </a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/caminhoes" routerLinkActive="active">
-        <i class="bi bi-truck"></i>
-        <span class="sidebar-menu-item-text">Caminhões</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/pessoas" routerLinkActive="active">
-        <i class="bi bi-people-fill"></i>
-        <span class="sidebar-menu-item-text">Pessoas</span>
-      </a>
-    </li>
-
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/usuarios" routerLinkActive="active">
-        <i class="bi bi-person-circle"></i>
-        <span class="sidebar-menu-item-text">Usuários</span>
-      </a>
+      <div id="collapseRelatorios" class="collapse" data-bs-parent=".nav-list">
+        <ul class="nav flex-column ps-4" role="menu" aria-label="Relatórios">
+          <li><a class="nav-link" routerLink="/relatorios/financeiro" routerLinkActive="active"><i class="bi bi-graph-up"></i> Financeiro</a></li>
+          <li><a class="nav-link" routerLink="/relatorios/operacional" routerLinkActive="active"><i class="bi bi-bar-chart-steps"></i> Operacional</a></li>
+        </ul>
+      </div>
     </li>
 
   </ul>
 
-  <hr class="sidebar-divider d-none d-md-block">
-
+  <hr class="sidebar-divider d-none d-md-block" />
 </nav>

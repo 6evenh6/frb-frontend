@@ -2,165 +2,87 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NgbModal, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import { Pessoa, TipoPessoa } from 'app/models/pessoas.model';
+import { Usuario, TipoUsuario } from 'app/models/usuarios.model';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-pessoas',
+  selector: 'app-usuarios',
   standalone: true,
   imports: [CommonModule, FormsModule, NgbPaginationModule],
   templateUrl: './usuarios.html',
   styleUrls: ['./usuarios.scss']
 })
-export class Pessoas implements OnInit {
+export class Usuarios implements OnInit {
   @ViewChild('modalDetalhes') modalDetalhes!: TemplateRef<any>;
 
-  TipoPessoa = TipoPessoa;
+  TipoUsuario = TipoUsuario;
   exibirFormulario = false;
-  pessoaSelecionada: any = null;
+  usuarioSelecionado: any = null;
 
-  pessoas: any[] = [];
-  displayedViagens: any[] = [];
+  usuarios: Usuario[] = [];
+  displayedUsuarios: Usuario[] = [];
   collectionSize = 0;
   page = 1;
   pageSize = 4;
 
   icones: string[] = [
-    'bi-geo-alt-fill',
-    'bi-calendar-check-fill',
-    'bi-speedometer2',
-    'bi-fuel-pump-fill',
-    'bi-box-seam',
-    'bi-map-fill'
+    'bi-person-fill',
+    'bi-person-check-fill',
+    'bi-person-badge-fill',
+    'bi-person-vcard-fill',
+    'bi-person-gear'
   ];
   iconeAtual: string = this.icones[Math.floor(Math.random() * this.icones.length)];
 
+  constructor(public modalService: NgbModal) {}
+
   ngOnInit(): void {
-    this.carregarPessoasIniciais();
+    this.carregarUsuariosIniciais();
   }
 
-  carregarPessoasIniciais(): void {
-    this.pessoas = [
+  carregarUsuariosIniciais(): void {
+    this.usuarios = [
       {
         id: 1,
-        tipo: TipoPessoa.PessoaJuridica,
-        nome: 'Transportadora SP-RJ',
-        documento: '12.345.678/0001-00',
-        inscricaoEstadual: '123456789',
-        telefone: '(11) 1111-1111',
-        celular: '(11) 99999-1111',
-        email: 'contato@sprj.com.br',
-        endereco: 'Rua A, 123',
-        bairro: 'Centro',
-        cidade: 'São Paulo',
-        estado: 'SP',
-        cep: '01000-000',
-        nomeResponsavel: 'João da Silva',
-        dataNascimentoOuFundacao: new Date('2005-01-15'),
-        observacoes: 'Entrega rápida e segura.',
-        origem: 'São Paulo - SP',
-        destino: 'Rio de Janeiro - RJ',
-        datasaida: '2025-07-10T08:00:00',
-        datachegada: '2025-07-11T18:30:00',
-        pessoaid: '1'
+        tipo: TipoUsuario.Administrador,
+        nome: 'João Admin',
+        email: 'joao@empresa.com',
+        telefone: '(11) 91234-5678',
+        dataCadastro: new Date('2025-01-10'),
+        ativo: true,
+        observacoes: 'Acesso total ao sistema.'
       },
       {
         id: 2,
-        tipo: TipoPessoa.PessoaFisica,
-        nome: 'Carlos Andrade',
-        documento: '123.456.789-00',
-        inscricaoEstadual: '',
-        telefone: '(19) 2222-2222',
-        celular: '(19) 98888-2222',
-        email: 'carlos@email.com',
-        endereco: 'Rua B, 456',
-        bairro: 'Jardins',
-        cidade: 'Campinas',
-        estado: 'SP',
-        cep: '13000-000',
-        nomeResponsavel: '',
-        dataNascimentoOuFundacao: new Date('1982-07-22'),
-        observacoes: '',
-        origem: 'Campinas - SP',
-        destino: 'Belo Horizonte - MG',
-        datasaida: '2025-07-09T07:30:00',
-        datachegada: '2025-07-10T17:45:00',
-        pessoaid: '2'
-      },
-      {
-        id: 3,
-        tipo: TipoPessoa.PessoaJuridica,
-        nome: 'Sul Transportes Ltda',
-        documento: '98.765.432/0001-99',
-        inscricaoEstadual: '987654321',
-        telefone: '(41) 3333-3333',
-        celular: '(41) 97777-3333',
-        email: 'contato@sultransportes.com.br',
-        endereco: 'Av. Paraná, 789',
-        bairro: 'Boa Vista',
-        cidade: 'Curitiba',
-        estado: 'PR',
-        cep: '80000-000',
-        nomeResponsavel: 'Ana Souza',
-        dataNascimentoOuFundacao: new Date('2010-03-10'),
-        observacoes: 'Empresa especializada em fretes para o sul.',
-        origem: 'Curitiba - PR',
-        destino: 'Porto Alegre - RS',
-        datasaida: '2025-07-08T06:00:00',
-        datachegada: '2025-07-09T15:20:00',
-        pessoaid: '3'
-      },
-      {
-        id: 4,
-        tipo: TipoPessoa.PessoaFisica,
-        nome: 'Marcos Lima',
-        documento: '987.654.321-00',
-        inscricaoEstadual: '',
-        telefone: '(71) 4444-4444',
-        celular: '(71) 96666-4444',
-        email: 'marcos.lima@gmail.com',
-        endereco: 'Rua das Flores, 321',
-        bairro: 'Barra',
-        cidade: 'Salvador',
-        estado: 'BA',
-        cep: '40000-000',
-        nomeResponsavel: '',
-        dataNascimentoOuFundacao: new Date('1990-11-03'),
-        observacoes: 'Freelancer de transporte interestadual.',
-        origem: 'Salvador - BA',
-        destino: 'Recife - PE',
-        datasaida: '2025-07-07T05:45:00',
-        datachegada: '2025-07-07T22:10:00',
-        pessoaid: '4'
+        tipo: TipoUsuario.Operador,
+        nome: 'Maria Operadora',
+        email: 'maria@empresa.com',
+        telefone: '(21) 99876-5432',
+        dataCadastro: new Date('2025-03-15'),
+        ativo: true,
+        observacoes: 'Responsável pelos cadastros.'
       }
+      // Adicione mais mock se quiser
     ];
-    this.collectionSize = this.pessoas.length;
-    this.refreshPessoas();
+    this.collectionSize = this.usuarios.length;
+    this.refreshUsuarios();
   }
 
-  refreshPessoas(): void {
+  refreshUsuarios(): void {
     const start = (this.page - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.displayedViagens = this.pessoas.slice(start, end);
+    this.displayedUsuarios = this.usuarios.slice(start, end);
   }
 
   modelo = this.novoModelo();
-  novoModelo(): Pessoa {
+  novoModelo(): Usuario {
     return {
-      tipo: TipoPessoa.PessoaJuridica,
+      tipo: TipoUsuario.Operador,
       nome: '',
-      documento: '',
-      inscricaoEstadual: '',
-      telefone: '',
-      celular: '',
       email: '',
-      endereco: '',
-      bairro: '',
-      cidade: '',
-      estado: '',
-      cep: '',
-      nomeResponsavel: '',
-      dataNascimentoOuFundacao: undefined,
+      telefone: '',
+      dataCadastro: new Date(),
+      ativo: true,
       observacoes: ''
     };
   }
@@ -175,39 +97,41 @@ export class Pessoas implements OnInit {
     this.modelo = this.novoModelo();
   }
 
-  salvarPessoa(form: NgForm) {
+  salvarUsuario(form: NgForm) {
     if (!form.valid) return;
 
-    const novaPessoa = {
+    const novoUsuario = {
       ...this.modelo,
-      id: this.pessoas.length > 0 ? Math.max(...this.pessoas.map(m => m.id)) + 1 : 1
+      id: this.usuarios.length > 0
+      ? Math.max(...this.usuarios.map(m => m.id!).filter((id): id is number => id !== undefined)) + 1
+      : 1
     };
 
-    this.pessoas.unshift(novaPessoa);
-    this.collectionSize = this.pessoas.length;
+    this.usuarios.unshift(novoUsuario);
+    this.collectionSize = this.usuarios.length;
     this.page = 1;
-    this.refreshPessoas();
+    this.refreshUsuarios();
     this.cancelar();
 
     Swal.fire({
       icon: 'success',
-      title: 'Pessoa cadastrada!',
+      title: 'Usuário cadastrado!',
       showConfirmButton: false,
       timer: 1500
     });
   }
 
-  abrirModalDetalhes(viagem: any): void {
-    this.pessoaSelecionada = viagem;
+  abrirModalDetalhes(usuario: Usuario): void {
+    this.usuarioSelecionado = usuario;
     this.modalService.open(this.modalDetalhes, { size: 'lg', centered: true });
   }
 
-  editarPessoa(viagem: any): void {
-    this.modelo = { ...viagem };
+  editarUsuario(usuario: Usuario): void {
+    this.modelo = { ...usuario };
     this.exibirFormulario = true;
   }
 
-  excluirPessoa(id: number): void {
+  excluirUsuario(id: number): void {
     Swal.fire({
       title: 'Tem certeza?',
       text: 'Essa ação não poderá ser desfeita.',
@@ -219,8 +143,8 @@ export class Pessoas implements OnInit {
       cancelButtonColor: '#6c757d'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.pessoas = this.pessoas.filter(m => m.id !== id);
-        this.refreshPessoas();
+        this.usuarios = this.usuarios.filter(m => m.id !== id);
+        this.refreshUsuarios();
         Swal.fire({
           icon: 'success',
           title: 'Excluído!',
@@ -230,6 +154,4 @@ export class Pessoas implements OnInit {
       }
     });
   }
-
-  constructor(public modalService: NgbModal) { }
 }

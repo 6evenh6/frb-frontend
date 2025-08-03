@@ -1,19 +1,25 @@
 <div class="container-fluid mt-4">
-    <div class="d-flex align-items-center mb-3">
-        <div>
-            <h2 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
-                Gerenciamento de Despesas
-                <span class="icon-wrapper bg-light rounded-circle d-flex align-items-center justify-content-center"
-                    style="width: 42px; height: 42px;">
-                    <i class="bi {{ iconeAtual }} text-secondary fs-4 animated-icon"></i>
-                </span>
-            </h2>
-            <small class="text-muted">Visualize, cadastre e acompanhe seus lançamentos financeiros.</small>
-        </div>
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h2 class="fw-bold text-primary mb-0 d-flex align-items-center gap-2">
+        Gerenciamento de Despesas
+        <span class="icon-wrapper bg-light rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 42px; height: 42px;">
+          <i class="bi {{ iconeAtual }} text-secondary fs-4 animated-icon"></i>
+        </span>
+      </h2>
+      <small class="text-muted">Visualize, cadastre e acompanhe seus lançamentos financeiros.</small>
     </div>
-    <div class="card mb-4">
-        <div class="card-header">Cadastro de Despesas</div>
-        <div class="card-body">
+    <button class="btn btn-success" (click)="abrirFormulario()">
+      <i class="bi bi-plus-circle-fill me-1"></i>
+      Novo Cadastro
+    </button>
+  </div>
+
+  <!-- Formulário com *ngIf -->
+  <div *ngIf="exibirFormulario" class="card mb-4 animate__animated animate__fadeIn">
+    <div class="card-header">Cadastro de Despesas</div>
+    <div class="card-body">
             <form #formDespesa="ngForm" (ngSubmit)="salvarDespesa(formDespesa)">
 
                 <div class="row">
